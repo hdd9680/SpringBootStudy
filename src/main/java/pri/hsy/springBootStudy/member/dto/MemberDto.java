@@ -1,29 +1,32 @@
 package pri.hsy.springBootStudy.member.dto;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pri.hsy.springBootStudy.CommDto;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@EqualsAndHashCode
-@Entity
+@ToString(exclude = "roles")
+@Entity(name = "MEMBER")
 @Table(name = "MEMBER")
-public class MemberDto {
+public class MemberDto extends CommDto {
 	
 	@Id
 	private String id;
@@ -38,13 +41,9 @@ public class MemberDto {
 	private String phone;
 	@Column
 	private String gender;
-	@Column
-	private LocalDateTime regDt;
-	@Column
-	private String registrar;
-	@Column
-	private LocalDateTime modifyDt;
-	@Column
-	private String modifier;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private List<RoleDto> roles;
 	
 }

@@ -1,7 +1,6 @@
 package pri.hsy.springBootStudy.member.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -28,16 +27,12 @@ public class MemberService {
 	
 	@Transactional
 	public MemberDto findMemberById(String id) {
-		
-		Optional<MemberDto> memberOption = memberRepository.findById(id);
-		
-		return memberOption.isEmpty() ? null : memberOption.get();
+		return memberRepository.findById(id).orElse(null);
 	}
 	
 	@Transactional
 	public List<MemberDto> findAllMember() {
 		return memberRepository.findAll();
 	}
-	
 	
 }
