@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.CommDto;
+import pri.hsy.springBootStudy.comm.dto.CommDto;
 
 @Getter
 @Setter
@@ -28,6 +28,6 @@ public class AuthorityDto extends CommDto {
 	@Column
 	private String name;
 	@Column
-	private String desc;
+	private String description;
 	
 }

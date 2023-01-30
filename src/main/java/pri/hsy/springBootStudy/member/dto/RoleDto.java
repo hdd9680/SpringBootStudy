@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.CommDto;
+import pri.hsy.springBootStudy.comm.dto.CommDto;
 
 @Getter
 @Setter
@@ -28,6 +28,22 @@ public class RoleDto extends CommDto {
 	
 	@EmbeddedId
 	private RoleId roleId;
+	
+	public void setId(String id) {
+		if(roleId == null) {
+			roleId = new RoleId();
+		}
+		
+		roleId.setId(id);
+	}
+	
+	public void setCode(String code) {
+		if(roleId == null) {
+			roleId = new RoleId();
+		}
+		
+		roleId.setCode(code);
+	}
 	
 	@Getter
 	@Setter
