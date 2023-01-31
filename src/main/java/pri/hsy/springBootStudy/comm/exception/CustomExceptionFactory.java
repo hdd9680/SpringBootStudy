@@ -4,6 +4,10 @@ import org.springframework.http.HttpStatus;
 
 public class CustomExceptionFactory {
 	
+	public static CustomException makeCustomException(HttpStatus httpStatus, String keyword) {
+		return new CustomException(HttpStatus.BAD_REQUEST, keyword);
+	}
+	
 	public static CustomException unvalidData(String keyword) {
 		return new CustomException(HttpStatus.BAD_REQUEST, keyword + " 유효하지 않습니다.");
 	}
