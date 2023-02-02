@@ -23,27 +23,23 @@ import pri.hsy.springBootStudy.comm.dto.CommDto;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "roles")
-@Entity(name = "MEMBER")
-@Table(name = "MEMBER")
-public class MemberDto extends CommDto {
+@ToString(exclude = "childDepartment")
+@Entity(name = "DEPARTMENT")
+@Table(name = "DEPARTMENT")
+public class DepartmentDto extends CommDto {
 	
 	@Id
-	private String id;
+	private String code;
 	
 	@Column
-	private String password;
+	private String parentCode;
 	@Column
 	private String name;
 	@Column
-	private String birthDay;
-	@Column
-	private String phone;
-	@Column
-	private String gender;
+	private String description;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id")
-	private List<RoleDto> roles;
+	@JoinColumn(name = "parentCode", referencedColumnName = "code")
+	private List<DepartmentDto> childDepartment;
 	
 }
