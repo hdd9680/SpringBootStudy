@@ -2,21 +2,13 @@ package pri.hsy.springBootStudy.member.dto;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.comm.dto.CommDto;
+import pri.hsy.springBootStudy.member.entity.Member;
 
 @Getter
 @Setter
@@ -24,26 +16,38 @@ import pri.hsy.springBootStudy.comm.dto.CommDto;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "roles")
-@Entity(name = "MEMBER")
-@Table(name = "MEMBER")
-public class MemberDto extends CommDto {
+public class MemberDto {
 	
-	@Id
 	private String id;
-	
-	@Column
 	private String password;
-	@Column
 	private String name;
-	@Column
 	private String birthDay;
-	@Column
 	private String phone;
-	@Column
 	private String gender;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id")
 	private List<RoleDto> roles;
+	
+	public Member to() {
+		return Member.builder()
+			.id(id)
+			.password(password)
+			.name(name)
+			.birthDay(birthDay)
+			.phone(phone)
+			.gender(gender)
+			.build();
+	}
+	
+	public static MemberDto of(Member member) {
+		return MemberDto.builder()
+				.id(member.getId())
+				.password(member.getPassword())
+				.name(member.getName())
+				.birthDay(member.getBirthDay())
+				.phone(member.getPhone())
+				.gender(member.getGender())
+				.roles(member.getRoles().stream().map(RoleDto::of).toList())
+				.build();
+	}
 	
 }

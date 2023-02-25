@@ -16,30 +16,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.comm.dto.CommDto;
+import pri.hsy.springBootStudy.member.entity.Department;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "childDepartment")
-@Entity(name = "DEPARTMENT")
-@Table(name = "DEPARTMENT")
-public class DepartmentDto extends CommDto {
+public class DepartmentDto {
 	
-	@Id
 	private String code;
-	
-	@Column
 	private String parentCode;
-	@Column
+	private DepartmentDto parent;
 	private String name;
-	@Column
 	private String description;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "parentCode", referencedColumnName = "code")
 	private List<DepartmentDto> childDepartment;
 	
+	public Department to() {
+		return Department.builder()
+				.code(code)
+				.parentCode(parentCode)
+				.name(name)
+				.description(description)
+				.childDepartment(childDepartment.stream().map(DepartmentDto::to).toList())
+				.build();
+	}
+	
+	public static DepartmentDto of(Department department) {
+		return DepartmentDto.builder()
+				.code(department.getCode())
+				.parentCode(department.getParentCode())
+				.parent(DepartmentDto.of(department.getParent()))
+				.name(department.getName())
+				.description(department.getDescription())
+				.build();
+	}
 }

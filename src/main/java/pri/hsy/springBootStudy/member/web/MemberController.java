@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,85 +42,85 @@ public class MemberController {
 		return "member/join";
 	}
 	
-	@RequestMapping("/save")
+	@PostMapping("")
 	public ResponseEntity<Void> saveMember(@RequestBody MemberDto member) {
 		memberService.saveMember(member);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteMember(@PathVariable String id) {
 		memberService.deleteMember(id);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/find/{id}")
+	@GetMapping("/{id}")
 	@ResponseBody
 	public MemberDto findMemberById(@PathVariable String id) {
 		return memberService.findMemberById(id);
 	}
 	
-	@RequestMapping("/findAll")
+	@GetMapping("")
 	@ResponseBody
 	public List<MemberDto> findAllMember() {
 		return memberService.findAllMember();
 	}
 	
-	@RequestMapping("/role/save")
+	@PostMapping("/role")
 	public ResponseEntity<Void> saveRole(@RequestBody RoleDto role) {
 		memberService.saveRole(role);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/role/delete/id/{id}/code/{code}")
+	@DeleteMapping("/role/id/{id}/code/{code}")
 	public ResponseEntity<Void> deleteRole(@PathVariable String id,@PathVariable String code) {
-		memberService.deleteRole(new RoleDto.RoleId(id, code));
+		memberService.deleteRole(new RoleDto(id, code));
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/role/find/id/{id}/code/{code}")
+	@GetMapping("/role/id/{id}/code/{code}")
 	@ResponseBody
 	public RoleDto findRoleById(@PathVariable String id,@PathVariable String code) {
-		return memberService.findRoleById(new RoleDto.RoleId(id, code));
+		return memberService.findRoleById(new RoleDto(id, code));
 	}
 	
-	@RequestMapping("/role/find/id/{id}")
+	@GetMapping("/role/id/{id}")
 	@ResponseBody
 	public List<RoleDto> findRoleByRoleId(@PathVariable String id) {
 		return memberService.findRoleByRoleId(id);
 	}
 	
-	@RequestMapping("/role/find/code/{code}")
+	@GetMapping("/role/code/{code}")
 	@ResponseBody
 	public List<RoleDto> findRoleByRoleCode(@PathVariable String code) {
 		return memberService.findRoleByRoleCode(code);
 	}
 	
-	@RequestMapping("/role/findAll")
+	@GetMapping("/role")
 	@ResponseBody
 	public List<RoleDto> findAllRole() {
 		return memberService.findAllRole();
 	}
 	
-	@RequestMapping("/auth/save")
+	@PostMapping("/auth")
 	public ResponseEntity<Void> saveAuthority(@RequestBody AuthorityDto authority) {
 		memberService.saveAuthority(authority);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/auth/delete/{id}")
+	@DeleteMapping("/auth/{id}")
 	public ResponseEntity<Void> deleteAuthority(@PathVariable String id) {
 		memberService.deleteAuthority(id);
 		return ResponseEntity.ok().build();
 	}
 	
-	@RequestMapping("/auth/find/{id}")
+	@GetMapping("/auth/{id}")
 	@ResponseBody
 	public AuthorityDto findAuthorityById(@PathVariable String id) {
 		return memberService.findAuthorityById(id);
 	}
 	
-	@RequestMapping("/auth/findAll")
+	@GetMapping("/auth")
 	@ResponseBody
 	public List<AuthorityDto> findAllAuthority() {
 		return memberService.findAllAuthority();

@@ -1,16 +1,12 @@
 package pri.hsy.springBootStudy.member.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.comm.dto.CommDto;
+import pri.hsy.springBootStudy.member.entity.Authority;
 
 @Getter
 @Setter
@@ -18,16 +14,26 @@ import pri.hsy.springBootStudy.comm.dto.CommDto;
 @AllArgsConstructor
 @Builder
 @ToString
-@Entity(name = "AUTHORITY")
-@Table(name = "AUTHORITY")
-public class AuthorityDto extends CommDto {
+public class AuthorityDto {
 	
-	@Id
 	private String code;
-	
-	@Column
 	private String name;
-	@Column
 	private String description;
+	
+	public Authority to() {
+		return Authority.builder()
+				.code(code)
+				.name(name)
+				.description(description)
+				.build();
+	}
+	
+	public static AuthorityDto of(Authority authority) {
+		return AuthorityDto.builder()
+				.code(authority.getCode())
+				.name(authority.getName())
+				.description(authority.getDescription())
+				.build();
+	}
 	
 }

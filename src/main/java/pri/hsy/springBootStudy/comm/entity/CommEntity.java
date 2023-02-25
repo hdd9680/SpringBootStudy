@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.comm.dto;
+package pri.hsy.springBootStudy.comm.entity;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +14,7 @@ import lombok.Getter;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass
-public class CommDto {
-	
+public class CommEntity {
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime regDt;

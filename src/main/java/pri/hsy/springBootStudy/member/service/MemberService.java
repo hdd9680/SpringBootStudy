@@ -13,6 +13,9 @@ import pri.hsy.springBootStudy.member.dao.RoleRepository;
 import pri.hsy.springBootStudy.member.dto.AuthorityDto;
 import pri.hsy.springBootStudy.member.dto.MemberDto;
 import pri.hsy.springBootStudy.member.dto.RoleDto;
+import pri.hsy.springBootStudy.member.entity.Authority;
+import pri.hsy.springBootStudy.member.entity.Member;
+import pri.hsy.springBootStudy.member.entity.Role;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +32,7 @@ public class MemberService {
 			throw CustomExceptionFactory.unvalidData("회원 정보가");
 		}
 		
-		memberRepository.save(member);
+		memberRepository.save(member.to());
 	}
 	
 	@Transactional
@@ -39,60 +42,83 @@ public class MemberService {
 	
 	@Transactional
 	public MemberDto findMemberById(String id) {
-		return memberRepository.findById(id).orElse(null);
+		
+		Member member = memberRepository.findById(id).orElse(null);
+		
+		if(member == null) {
+			return null;
+		}
+		
+		return MemberDto.of(member);
 	}
 	
 	@Transactional
 	public List<MemberDto> findAllMember() {
-		return memberRepository.findAll();
+		
+		List<Member> memberList = memberRepository.findAll();
+		
+		return memberList.stream().map(MemberDto::of).toList();
 	}
 	
 	@Transactional
 	public void saveRole(RoleDto role) {
 		
-		if(role.getRoleId() == null) {
-			throw CustomExceptionFactory.unvalidData("회원과 권한 정보가");
-		}
-		
-		if(findMemberById(role.getRoleId().getId()) == null) {
+		if(findMemberById(role.getId()) == null) {
 			throw CustomExceptionFactory.unvalidData("회원 정보가");
 		}
 		
-		if(findAuthorityById(role.getRoleId().getCode()) == null) {
+		if(findAuthorityById(role.getCode()) == null) {
 			throw CustomExceptionFactory.unvalidData("권한 정보가");
 		}
 		
-		roleRepository.save(role);
+		roleRepository.save(role.to());
 	}
 	
 	@Transactional
-	public void deleteRole(RoleDto.RoleId roleId) {
-		roleRepository.deleteById(roleId);
+	public void deleteRole(RoleDto role) {
+		roleRepository.deleteById(Role.RolePk.builder()
+												.id(role.getId())
+												.code(role.getCode())
+												.build());
 	}
 	
 	@Transactional
-	public RoleDto findRoleById(RoleDto.RoleId roleId) {
+	public RoleDto findRoleById(RoleDto role) {
 		
-		if(roleId == null) {
+		if(role == null) {
 			throw CustomExceptionFactory.unvalidData("회원 권한 정보가");
 		}
 		
-		return roleRepository.findById(roleId).orElse(null);
+		Role roleEntity = roleRepository.findById(Role.RolePk.builder()
+																.id(role.getId())
+																.code(role.getCode())
+																.build()).orElse(null);
+		
+		return RoleDto.of(roleEntity);
 	}
 	
 	@Transactional
 	public List<RoleDto> findAllRole() {
-		return roleRepository.findAll();
+		
+		List<Role> roleList = roleRepository.findAll();
+		
+		return roleList.stream().map(RoleDto::of).toList();
 	}
 	
 	@Transactional
 	public List<RoleDto> findRoleByRoleId(String id) {
-		return roleRepository.findRoleByRoleId(id);
+		
+		List<Role> roleList = roleRepository.findRoleByRoleId(id);
+		
+		return roleList.stream().map(RoleDto::of).toList();
 	}
 	
 	@Transactional
 	public List<RoleDto> findRoleByRoleCode(String code) {
-		return roleRepository.findRoleByRoleCode(code);
+		
+		List<Role> roleList = roleRepository.findRoleByRoleCode(code);
+		
+		return roleList.stream().map(RoleDto::of).toList();
 	}
 	
 	@Transactional
@@ -102,7 +128,7 @@ public class MemberService {
 			throw CustomExceptionFactory.unvalidData("권한 정보가");
 		}
 		
-		authorityRepository.save(authority);
+		authorityRepository.save(authority.to());
 	}
 	
 	@Transactional
@@ -112,12 +138,22 @@ public class MemberService {
 	
 	@Transactional
 	public AuthorityDto findAuthorityById(String code) {
-		return authorityRepository.findById(code).orElse(null);
+		
+		Authority authority = authorityRepository.findById(code).orElse(null);
+		
+		if(authority == null) {
+			return null;
+		}
+		
+		return AuthorityDto.of(authority);
 	}
 	
 	@Transactional
 	public List<AuthorityDto> findAllAuthority() {
-		return authorityRepository.findAll();
+		
+		List<Authority> authorityList = authorityRepository.findAll();
+		
+		return authorityList.stream().map(AuthorityDto::of).toList();
 	}
 	
 }

@@ -5,17 +5,15 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import pri.hsy.springBootStudy.member.dto.RoleDto;
+import pri.hsy.springBootStudy.member.entity.Role;
 
-@Repository
-public interface RoleRepository extends JpaRepository<RoleDto, RoleDto.RoleId> {
+public interface RoleRepository extends JpaRepository<Role, Role.RolePk> {
 	
-	@Query("SELECT r FROM ROLE r WHERE r.roleId.id = :id")
-	public List<RoleDto> findRoleByRoleId(@Param(value = "id") String id);
+	@Query("SELECT r FROM ROLE r WHERE r.id = :id")
+	public List<Role> findRoleByRoleId(@Param(value = "id") String id);
 	
-	@Query("SELECT r FROM ROLE r WHERE r.roleId.code = :code")
-	public List<RoleDto> findRoleByRoleCode(@Param(value = "code") String code);
+	@Query("SELECT r FROM ROLE r WHERE r.code = :code")
+	public List<Role> findRoleByRoleCode(@Param(value = "code") String code);
 	
 }

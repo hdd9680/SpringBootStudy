@@ -1,20 +1,12 @@
 package pri.hsy.springBootStudy.member.dto;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.comm.dto.CommDto;
+import pri.hsy.springBootStudy.member.entity.Role;
 
 @Getter
 @Setter
@@ -22,46 +14,23 @@ import pri.hsy.springBootStudy.comm.dto.CommDto;
 @AllArgsConstructor
 @Builder
 @ToString
-@Entity(name = "ROLE")
-@Table(name = "ROLE")
-public class RoleDto extends CommDto {
+public class RoleDto {
 	
-	@EmbeddedId
-	private RoleId roleId;
+	private String id;
+	private String code;
 	
-	public void setId(String id) {
-		if(roleId == null) {
-			roleId = new RoleId();
-		}
-		
-		roleId.setId(id);
+	public Role to() {
+		return Role.builder()
+				.id(id)
+				.code(code)
+				.build();
 	}
 	
-	public void setCode(String code) {
-		if(roleId == null) {
-			roleId = new RoleId();
-		}
-		
-		roleId.setCode(code);
-	}
-	
-	@Getter
-	@Setter
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@Builder
-	@Embeddable
-	@EqualsAndHashCode
-	public static class RoleId implements Serializable {
-
-		private static final long serialVersionUID = -996482349917884102L;
-
-		@Column
-		private String id;
-		
-		@Column
-		private String code;
-		
+	public static RoleDto of(Role role) {
+		return RoleDto.builder()
+				.id(role.getId())
+				.code(role.getCode())
+				.build();
 	}
 	
 }
