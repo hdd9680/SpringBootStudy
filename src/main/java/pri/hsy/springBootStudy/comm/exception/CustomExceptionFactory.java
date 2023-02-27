@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class CustomExceptionFactory {
 	
 	public static CustomException makeCustomException(HttpStatus httpStatus, String keyword) {
-		return new CustomException(HttpStatus.BAD_REQUEST, keyword);
+		return new CustomException(httpStatus, keyword);
 	}
 	
 	public static CustomException unvalidData(String keyword) {
