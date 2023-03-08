@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.entity;
+package pri.hsy.springBootStudy.security.entity;
 
 import java.io.Serializable;
 
@@ -26,8 +26,8 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 @ToString
 @Entity(name = "ROLE")
 @Table(name = "ROLE")
-@IdClass(Role.RolePk.class)
-public class Role extends CommEntity {
+@IdClass(RoleEntity.RolePk.class)
+public class RoleEntity extends CommEntity {
 	
 	@Id
 	private String id;

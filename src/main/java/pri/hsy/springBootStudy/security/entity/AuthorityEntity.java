@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.entity;
+package pri.hsy.springBootStudy.security.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 @ToString
 @Entity(name = "AUTHORITY")
 @Table(name = "AUTHORITY")
-public class Authority extends CommEntity {
+public class AuthorityEntity extends CommEntity {
 	
 	@Id
 	private String code;

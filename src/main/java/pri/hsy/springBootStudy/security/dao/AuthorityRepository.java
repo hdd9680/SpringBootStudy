@@ -1,9 +1,9 @@
-package pri.hsy.springBootStudy.member.dao;
+package pri.hsy.springBootStudy.security.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import pri.hsy.springBootStudy.member.entity.Authority;
 
-public interface AuthorityRepository extends JpaRepository<Authority, String> {
+public interface AuthorityRepository extends JpaRepository<AuthorityEntity, String> {
 
 }

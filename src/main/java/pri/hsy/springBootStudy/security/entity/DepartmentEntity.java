@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.entity;
+package pri.hsy.springBootStudy.security.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 @ToString(exclude = "childDepartment")
 @Entity(name = "DEPARTMENT")
 @Table(name = "DEPARTMENT")
-public class Department extends CommEntity {
+public class DepartmentEntity extends CommEntity {
 	
 	@Id
 	private String code;
@@ -38,7 +38,7 @@ public class Department extends CommEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "parentCode", referencedColumnName = "code", insertable = false, updatable = false)
-	private Department parent;
+	private DepartmentEntity parent;
 	
 	@Column
 	private String name;
@@ -46,6 +46,6 @@ public class Department extends CommEntity {
 	private String description;
 	
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Department> childDepartment = new ArrayList<>();
+	private List<DepartmentEntity> childDepartment = new ArrayList<>();
 	
 }

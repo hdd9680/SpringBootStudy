@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.dto;
+package pri.hsy.springBootStudy.security.dto;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.member.entity.Member;
+import pri.hsy.springBootStudy.member.entity.UserEntity;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import pri.hsy.springBootStudy.member.entity.Member;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "roles")
-public class MemberDto {
+public class UserDto {
 	
 	private String id;
 	private String password;
@@ -27,8 +27,8 @@ public class MemberDto {
 	
 	private List<RoleDto> roles;
 	
-	public Member to() {
-		return Member.builder()
+	public UserEntity to() {
+		return UserEntity.builder()
 			.id(id)
 			.password(password)
 			.name(name)
@@ -38,8 +38,8 @@ public class MemberDto {
 			.build();
 	}
 	
-	public static MemberDto of(Member member) {
-		return MemberDto.builder()
+	public static UserDto of(UserEntity member) {
+		return UserDto.builder()
 				.id(member.getId())
 				.password(member.getPassword())
 				.name(member.getName())

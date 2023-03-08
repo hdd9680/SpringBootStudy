@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.dao;
+package pri.hsy.springBootStudy.security.dao;
 
 import java.util.List;
 
@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import pri.hsy.springBootStudy.member.entity.Role;
+import pri.hsy.springBootStudy.security.entity.RoleEntity;
 
-public interface RoleRepository extends JpaRepository<Role, Role.RolePk> {
+public interface RoleRepository extends JpaRepository<RoleEntity, RoleEntity.RolePk> {
 	
 	@Query("SELECT r FROM ROLE r WHERE r.id = :id")
-	public List<Role> findRoleByRoleId(@Param(value = "id") String id);
+	public List<RoleEntity> findRoleByRoleId(@Param(value = "id") String id);
 	
 	@Query("SELECT r FROM ROLE r WHERE r.code = :code")
-	public List<Role> findRoleByRoleCode(@Param(value = "code") String code);
+	public List<RoleEntity> findRoleByRoleCode(@Param(value = "code") String code);
 	
 }

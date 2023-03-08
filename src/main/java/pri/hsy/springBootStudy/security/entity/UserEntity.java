@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.member.entity;
+package pri.hsy.springBootStudy.security.entity;
 
 import java.util.List;
 
@@ -24,9 +24,9 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "roles")
-@Entity(name = "MEMBER")
-@Table(name = "MEMBER")
-public class Member extends CommEntity {
+@Entity(name = "USER")
+@Table(name = "USER")
+public class UserEntity extends CommEntity {
 
 	@Id
 	private String id;
@@ -44,6 +44,6 @@ public class Member extends CommEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id", referencedColumnName = "id")
-	private List<Role> roles;
+	private List<RoleEntity> roles;
 	
 }
