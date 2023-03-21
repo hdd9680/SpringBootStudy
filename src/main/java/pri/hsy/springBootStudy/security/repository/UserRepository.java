@@ -11,9 +11,9 @@ import pri.hsy.springBootStudy.security.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-	@Query("SELECT m FROM MEMBER m LEFT JOIN FETCH m.roles WHERE m.id = :id")
+	@Query("SELECT u FROM USER u LEFT JOIN FETCH u.roles WHERE u.id = :id")
 	Optional<UserEntity> findById(@Param(value = "id") String id);
 	
-	@Query("SELECT m FROM MEMBER m LEFT JOIN FETCH m.roles")
+	@Query("SELECT u FROM USER u LEFT JOIN FETCH u.roles")
 	List<UserEntity> findAll();
 }

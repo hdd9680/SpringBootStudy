@@ -2,22 +2,21 @@ package pri.hsy.springBootStudy.comm.security;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -30,14 +29,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @EnableWebSecurity
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
+	
+	@Value("${spring.security.strategy}")
+	private String securityContextHolderStrategy;
 	
 	@Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -124,32 +126,32 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		
 		// 인증/인가 예외 처리
-		http.exceptionHandling()
-				.authenticationEntryPoint(new AuthenticationEntryPoint() {
-					
-					@Override
-					public void commence(HttpServletRequest request, HttpServletResponse response,
-							AuthenticationException authException) throws IOException, ServletException {
-						
-						log.info("이게 왜 나오는지 모르겠음");
-						
-						response.setStatus(401);
-						response.setContentType("application/json;charset=UTF-8");
-						response.getWriter().append("인증이 필요한 서비스입니다.");
-					}
-				})
-				.accessDeniedHandler(new AccessDeniedHandler() {
-					
-					@Override
-					public void handle(HttpServletRequest request, HttpServletResponse response,
-							AccessDeniedException accessDeniedException) throws IOException, ServletException {
-						response.setStatus(403);
-						response.setContentType("application/json;charset=UTF-8");
-						response.getWriter().append("현재 권한으로는 접근할 수 없는 서비스입니다.");
-					}
-				});
+//		http.exceptionHandling()
+//				.authenticationEntryPoint(new AuthenticationEntryPoint() {
+//					
+//					@Override
+//					public void commence(HttpServletRequest request, HttpServletResponse response,
+//							AuthenticationException authException) throws IOException, ServletException {
+//						
+//						log.info("이게 왜 나오는지 모르겠음");
+//						
+//						response.setStatus(401);
+//						response.setContentType("application/json;charset=UTF-8");
+//						response.getWriter().append("인증이 필요한 서비스입니다.");
+//					}
+//				})
+//				.accessDeniedHandler(new AccessDeniedHandler() {
+//					
+//					@Override
+//					public void handle(HttpServletRequest request, HttpServletResponse response,
+//							AccessDeniedException accessDeniedException) throws IOException, ServletException {
+//						response.setStatus(403);
+//						response.setContentType("application/json;charset=UTF-8");
+//						response.getWriter().append("현재 권한으로는 접근할 수 없는 서비스입니다.");
+//					}
+//				});
 		
-		http.authorizeHttpRequests();
+		SecurityContextHolder.setStrategyName(securityContextHolderStrategy);
 		
 		return http.build();
 	}

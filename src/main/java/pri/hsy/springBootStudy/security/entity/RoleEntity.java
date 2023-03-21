@@ -2,12 +2,13 @@ package pri.hsy.springBootStudy.security.entity;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,24 +31,27 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 public class RoleEntity extends CommEntity {
 	
 	@Id
-	private String id;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id", referencedColumnName = "id")
+	private UserEntity user;
 	
 	@Id
-	private String code;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "code", referencedColumnName = "code")
+	private AuthorityEntity authority;
 	
 	@Getter
 	@Setter
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Builder
+	@EqualsAndHashCode
 	public static class RolePk implements Serializable {
 
 		private static final long serialVersionUID = -996482349917884102L;
 
-		@Column
 		private String id;
 		
-		@Column
 		private String code;
 		
 	}

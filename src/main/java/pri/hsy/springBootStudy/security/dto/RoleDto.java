@@ -16,20 +16,20 @@ import pri.hsy.springBootStudy.security.entity.RoleEntity;
 @ToString
 public class RoleDto {
 	
-	private String id;
-	private String code;
+	private UserDto user;
+	private AuthorityDto authority;
 	
 	public RoleEntity to() {
 		return RoleEntity.builder()
-				.id(id)
-				.code(code)
+				.user(user.to())
+				.authority(authority.to())
 				.build();
 	}
 	
 	public static RoleDto of(RoleEntity role) {
 		return RoleDto.builder()
-				.id(role.getId())
-				.code(role.getCode())
+				.user(UserDto.of(role.getUser()))
+				.authority(AuthorityDto.of(role.getAuthority()))
 				.build();
 	}
 	
