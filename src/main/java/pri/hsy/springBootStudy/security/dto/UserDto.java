@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.member.entity.UserEntity;
+import pri.hsy.springBootStudy.security.entity.UserEntity;
 
 @Getter
 @Setter

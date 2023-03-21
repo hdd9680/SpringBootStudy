@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import pri.hsy.springBootStudy.member.entity.AuthorityEntity;
+import pri.hsy.springBootStudy.security.entity.AuthorityEntity;
 
 @Getter
 @Setter

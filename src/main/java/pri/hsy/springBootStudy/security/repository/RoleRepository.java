@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.security.dao;
+package pri.hsy.springBootStudy.security.repository;
 
 import java.util.List;
 

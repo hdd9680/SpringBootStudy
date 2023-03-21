@@ -1,15 +1,13 @@
 package pri.hsy.springBootStudy.comm.security;
 
 import java.io.IOException;
-import java.util.function.Supplier;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authorization.AuthorizationDecision;
-import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,7 +18,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -43,10 +40,16 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityConfig {
 	
 	@Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/resource/**");
+    }
+	
+	@Bean
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		
 		// 접근 URL 설정
 		http.authorizeHttpRequests()
+				.requestMatchers("/login", "/", "/logout").permitAll()
 				.requestMatchers("/user").hasRole("USER")
 				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SYS")
 				.requestMatchers("/admin/pay").hasRole("ADMIN")
@@ -127,7 +130,11 @@ public class SecurityConfig {
 					@Override
 					public void commence(HttpServletRequest request, HttpServletResponse response,
 							AuthenticationException authException) throws IOException, ServletException {
+						
+						log.info("이게 왜 나오는지 모르겠음");
+						
 						response.setStatus(401);
+						response.setContentType("application/json;charset=UTF-8");
 						response.getWriter().append("인증이 필요한 서비스입니다.");
 					}
 				})
@@ -137,9 +144,12 @@ public class SecurityConfig {
 					public void handle(HttpServletRequest request, HttpServletResponse response,
 							AccessDeniedException accessDeniedException) throws IOException, ServletException {
 						response.setStatus(403);
+						response.setContentType("application/json;charset=UTF-8");
 						response.getWriter().append("현재 권한으로는 접근할 수 없는 서비스입니다.");
 					}
 				});
+		
+		http.authorizeHttpRequests();
 		
 		return http.build();
 	}
