@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import pri.hsy.springBootStudy.security.dto.AuthorityDto;
 import pri.hsy.springBootStudy.security.dto.RoleDto;
 import pri.hsy.springBootStudy.security.dto.UserDto;
@@ -16,7 +16,7 @@ import pri.hsy.springBootStudy.security.repository.RoleRepository;
 import pri.hsy.springBootStudy.security.repository.UserRepository;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityService {
 	
 	private final UserRepository userRepository;
@@ -24,55 +24,52 @@ public class SecurityService {
 	private final AuthorityRepository authorityRepository;
 	
 	
-	public List<UserDto> findUserAll() {
-		return userRepository.findAll().stream().map(UserDto::of).toList();
+	private void saveUser(UserDto user) {
+		userRepository.save(user.to());
 	}
 	
-	public List<RoleDto> findRoleAll() {
-		return roleRepository.findAll().stream().map(RoleDto::of).toList();
+	private void deleteUser(UserEntity user) {
+		userRepository.delete(user);
 	}
 	
-	public List<AuthorityDto> findAuthorityAll() {
-		return authorityRepository.findAll().stream().map(AuthorityDto::of).toList();
+	private UserEntity findUserById(Long uid) {
+		return userRepository.findById(uid).orElse(null);
 	}
 	
-	public RoleDto findRole(String id, String code) {
-		return RoleDto.of(findRoleEntity(id, code));
+	private List<UserEntity> findUserAll() {
+		return userRepository.findAll();
 	}
 	
-	public void deleteRole(String id, String code) {
-		roleRepository.deleteById(new RoleEntity.RolePk(id, code));
+	private void saveRole(RoleDto role) {
+		roleRepository.save(role.to());
 	}
 	
-	public void deleteAuthority(String code) {
-		authorityRepository.deleteById(code);
+	private void deleteRole(RoleEntity role) {
+		roleRepository.delete(role);
 	}
 	
-	public UserDto findUser(String id) {
-		return UserDto.of(findUserEntity(id));
+	private RoleEntity findRoleById(Long uid) {
+		return roleRepository.findById(uid).orElse(null);
 	}
 	
-	private void saveUserEntity(UserEntity user) {
-		userRepository.save(user);
+	private List<RoleEntity> findRoleAll() {
+		return roleRepository.findAll();
 	}
 	
-	private UserEntity findUserEntity(String id) {
-		return userRepository.findById(id).orElse(null);
+	private void saveAuthority(AuthorityDto authority) {
+		authorityRepository.save(authority.to());
 	}
 	
-	private void saveRoleEntity(RoleEntity role) {
-		roleRepository.save(role);
+	private void deleteAuthority(AuthorityEntity authority) {
+		authorityRepository.delete(authority);
 	}
 	
-	private RoleEntity findRoleEntity(String id, String code) {
-		return roleRepository.findByIdAndCode(id, code);
+	private AuthorityEntity findAuthorityById(Long uid) {
+		return authorityRepository.findById(uid).orElse(null);
 	}
 	
-	private void saveAuthorityEntity(AuthorityEntity authority) {
-		authorityRepository.save(authority);
+	private List<AuthorityEntity> findAuthorityAll() {
+		return authorityRepository.findAll();
 	}
-	
-	private AuthorityEntity findAuthorityEntity(String id) {
-		return authorityRepository.findById(id).orElse(null);
-	}
+
 }

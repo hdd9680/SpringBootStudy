@@ -1,4 +1,4 @@
-package pri.hsy.springBootStudy.comm.security;
+package pri.hsy.springBootStudy.security.config;
 
 import java.io.IOException;
 
@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -43,7 +45,9 @@ public class SecurityConfig {
 	
 	@Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/resource/**");
+        return (web) -> {
+        	web.ignoring().requestMatchers("/js/**");
+        };
     }
 	
 	@Bean
@@ -51,18 +55,15 @@ public class SecurityConfig {
 		
 		// 접근 URL 설정
 		http.authorizeHttpRequests()
-				.requestMatchers("/login", "/", "/logout").permitAll()
-				.requestMatchers("/user").hasRole("USER")
-				.requestMatchers("/admin/**").hasAnyRole("ADMIN", "SYS")
-				.requestMatchers("/admin/pay").hasRole("ADMIN")
+				.requestMatchers("/login", "/logout", "/join").permitAll()
 				.anyRequest().authenticated();
 		
 		// 인증 설정
 		http.formLogin()
-//				.loginPage("/loginPage")
+				.loginPage("/login")
 				.defaultSuccessUrl("/")
 				.failureUrl("/login")
-				.usernameParameter("id")
+				.usernameParameter("email")
 				.passwordParameter("password")
 				.loginProcessingUrl("/login")
 				.successHandler(new AuthenticationSuccessHandler() {
@@ -157,26 +158,8 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	public UserDetailsService users() {
-		UserDetails user = User.builder()
-			.username("user")
-			.password("{noop}1111")
-			.roles("USER")
-			.build();
-		
-		UserDetails sys = User.builder()
-				.username("sys")
-				.password("{noop}1111")
-				.roles("SYS", "USER")
-				.build();
-		
-		UserDetails admin = User.builder()
-			.username("admin")
-			.password("{noop}1111")
-			.roles("ADMIN", "SYS", "USER")
-			.build();
-		
-		return new InMemoryUserDetailsManager(user, admin, sys);
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 	
 }

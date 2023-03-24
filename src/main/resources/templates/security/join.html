@@ -1,0 +1,63 @@
+<!DOCUTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>로그인</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="_csrf_header" th:content="${_csrf.headerName}">
+		<meta name="_csrf" th:content="${_csrf.token}">
+        <script type="text/javascript" src="/js/jquery-3.6.4.min.js"></script>
+    </head>
+    <body>
+    	<div>
+			<label for="email">이메일 : </label>
+    		<input id="email" type="text"/>
+    		<br/>
+    		<label for="password">비밀번호 : </label>
+    		<input id="password" type="password"/>
+    		<br/>
+    		<label for="name">이름 : </label>
+    		<input id="name" type="text"/>
+    		<br/>
+    		<label for="birth">생년월일 : </label>
+    		<input id="birth" type="tel" maxlength="8"/>
+    		<br/>
+    		<label for="phone">전화번호 : </label>
+    		<input id="phone" type="phone" maxlength="15"/>
+    		<br/>
+    		<label>성별 : </label>
+    		<label for="genderM">남자</label><input id="genderM" type="radio" name="gneder" value="M"/>
+    		<label for="genderF">여자</label><input id="genderF" type="radio" name="gneder" value="F"/>
+    		<br/>
+    		
+    		<button id="joinButton">회원가입</button>
+    	</div>
+    </body>
+    <script>
+    	let joinPage = {
+    			join : function() {
+    				
+    				let email =	$("#email").val();
+    				let password = $("#password").val();
+    				let name = $("#name").val();
+    				let birth = $("#birth").val();
+    				let phone = $("#phone").val().replaceAll("-", "");
+    				
+    				let data = {
+    						email,
+    						password
+    				};
+    				
+    				$.ajax({
+    					url : "/join",
+    					method : "POST",
+    					data : JSON.stringify(data)
+    				}).done()
+    			},
+    	}
+    
+    	$(document).ready(function() {
+    		$("#joinButton").click(joinPage.join);
+    	});
+    </script>
+</html>

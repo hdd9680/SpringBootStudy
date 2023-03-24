@@ -18,7 +18,8 @@ import pri.hsy.springBootStudy.security.entity.UserEntity;
 @ToString(exclude = "roles")
 public class UserDto {
 	
-	private String id;
+	private Long uid;
+	private String email;
 	private String password;
 	private String name;
 	private String birthDay;
@@ -29,24 +30,27 @@ public class UserDto {
 	
 	public UserEntity to() {
 		return UserEntity.builder()
-			.id(id)
+			.uid(uid)
+			.email(email)
 			.password(password)
 			.name(name)
 			.birthDay(birthDay)
 			.phone(phone)
 			.gender(gender)
+			.roles(roles.stream().map(RoleDto::to).toList())
 			.build();
 	}
 	
-	public static UserDto of(UserEntity member) {
+	public static UserDto of(UserEntity user) {
 		return UserDto.builder()
-				.id(member.getId())
-				.password(member.getPassword())
-				.name(member.getName())
-				.birthDay(member.getBirthDay())
-				.phone(member.getPhone())
-				.gender(member.getGender())
-				.roles(member.getRoles().stream().map(RoleDto::of).toList())
+				.uid(user.getUid())
+				.email(user.getEmail())
+				.password(user.getPassword())
+				.name(user.getName())
+				.birthDay(user.getBirthDay())
+				.phone(user.getPhone())
+				.gender(user.getGender())
+				.roles(user.getRoles().stream().map(RoleDto::of).toList())
 				.build();
 	}
 	

@@ -7,8 +7,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -25,25 +26,24 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "childDepartment")
+@ToString(exclude = {"childDepartment", "parent"})
 @Entity(name = "DEPARTMENT")
 @Table(name = "DEPARTMENT")
 public class DepartmentEntity extends CommEntity {
 	
 	@Id
-	private String code;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long uid;
 	
 	@Column
-	private String parentCode;
-	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "parentCode", referencedColumnName = "code", insertable = false, updatable = false)
-	private DepartmentEntity parent;
-	
+	private String code;
 	@Column
 	private String name;
 	@Column
 	private String description;
+	
+	@ManyToOne
+	private DepartmentEntity parent;
 	
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<DepartmentEntity> childDepartment = new ArrayList<>();

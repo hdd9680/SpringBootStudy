@@ -16,11 +16,13 @@ import pri.hsy.springBootStudy.security.entity.RoleEntity;
 @ToString
 public class RoleDto {
 	
+	private Long uid;
 	private UserDto user;
 	private AuthorityDto authority;
 	
 	public RoleEntity to() {
 		return RoleEntity.builder()
+				.uid(uid)
 				.user(user.to())
 				.authority(authority.to())
 				.build();
@@ -28,6 +30,7 @@ public class RoleDto {
 	
 	public static RoleDto of(RoleEntity role) {
 		return RoleDto.builder()
+				.uid(role.getUid())
 				.user(UserDto.of(role.getUser()))
 				.authority(AuthorityDto.of(role.getAuthority()))
 				.build();

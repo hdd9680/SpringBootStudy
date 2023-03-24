@@ -6,8 +6,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,11 @@ import pri.hsy.springBootStudy.comm.entity.CommEntity;
 public class UserEntity extends CommEntity {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long uid;
 	
+	@Column
+	private String email;
 	@Column
 	private String password;
 	@Column
@@ -42,8 +46,7 @@ public class UserEntity extends CommEntity {
 	@Column
 	private String gender;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
 	private List<RoleEntity> roles;
 	
 }
